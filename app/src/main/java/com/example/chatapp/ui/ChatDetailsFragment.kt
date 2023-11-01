@@ -1,13 +1,15 @@
-package com.example.chatapp
+package com.example.chatapp.ui
 
 import android.os.Bundle
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import com.example.chatapp.R
+import dagger.hilt.android.AndroidEntryPoint
 
-
-class LoginFragment : Fragment() {
+@AndroidEntryPoint
+class ChatDetailsFragment : Fragment() {
 
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -20,7 +22,7 @@ class LoginFragment : Fragment() {
         savedInstanceState: Bundle?
     ): View? {
         // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_login, container, false)
+        return inflater.inflate(R.layout.fragment_chat_details, container, false)
     }
 
 

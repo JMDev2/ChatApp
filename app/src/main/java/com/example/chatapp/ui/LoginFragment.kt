@@ -2,6 +2,7 @@ package com.example.chatapp.ui
 
 import android.os.Binder
 import android.os.Bundle
+import android.util.Log
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
@@ -11,6 +12,8 @@ import androidx.navigation.fragment.findNavController
 import com.example.chatapp.R
 import com.example.chatapp.databinding.FragmentLoginBinding
 import com.example.chatapp.models.Login
+import com.example.chatapp.utils.SharedPreference
+import com.example.chatapp.utils.SharedPreference.saveToken
 import com.example.personalexpenditure.utils.Status
 import dagger.hilt.android.AndroidEntryPoint
 
@@ -57,9 +60,16 @@ class LoginFragment : Fragment() {
         viewModel.chatLiveData.observe(viewLifecycleOwner) { response ->
             when (response.status) {
                 Status.SUCCESS -> {
+                    //saving the auth token in shared pref
+                    val authToken = response.data?.auth_token
+                    Log.d("TokenBeforeSaving","Token1: $authToken")
+                    if (authToken != null){
+                        saveToken(requireContext(),authToken)
+                        Log.d("TokenAfterSaving","Token2: $authToken")
+                    }
                     // Handle a successful login response
                   //  binding.progressBar.visibility = View.GONE
-                    findNavController().navigate(R.id.chatDetailsFragment)
+                    findNavController().navigate(R.id.allChatsFragment)
 
                 }
                 Status.LOADING -> {

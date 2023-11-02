@@ -9,7 +9,11 @@
         android:id="@+id/loginFragment"
         android:name="com.example.chatapp.ui.LoginFragment"
         android:label="fragment_login"
-        tools:layout="@layout/fragment_login" />
+        tools:layout="@layout/fragment_login" >
+        <action
+            android:id="@+id/action_loginFragment_to_allChatsFragment"
+            app:destination="@id/allChatsFragment" />
+    </fragment>
     <fragment
         android:id="@+id/homeFragment"
         android:name="com.example.chatapp.HomeFragment"
@@ -19,5 +23,18 @@
         android:id="@+id/chatDetailsFragment"
         android:name="com.example.chatapp.ui.ChatDetailsFragment"
         android:label="fragment_chat_details"
-        tools:layout="@layout/fragment_chat_details" />
+        tools:layout="@layout/fragment_chat_details" >
+        <action
+            android:id="@+id/action_chatDetailsFragment_to_allChatsFragment"
+            app:destination="@id/allChatsFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/allChatsFragment"
+        android:name="com.example.chatapp.ui.AllChatsFragment"
+        android:label="fragment_all_chats"
+        tools:layout="@layout/fragment_all_chats" >
+        <action
+            android:id="@+id/action_allChatsFragment_to_chatDetailsFragment"
+            app:destination="@id/chatDetailsFragment" />
+    </fragment>
 </navigation>

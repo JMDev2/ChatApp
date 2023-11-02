@@ -2,8 +2,11 @@ package com.example.chatapp.api
 
 import com.example.chatapp.models.AuthResponse
 import com.example.chatapp.models.Login
+import com.example.chatapp.models.MessageResponse
 import retrofit2.Response
 import retrofit2.http.Body
+import retrofit2.http.GET
+import retrofit2.http.Header
 import retrofit2.http.POST
 
 interface ChatService {
@@ -11,4 +14,11 @@ interface ChatService {
     suspend fun login(
         @Body login: Login
     ): Response<AuthResponse>
+
+
+    @GET("api/messages")
+    suspend fun getMessages(
+        @Header("X-Branch-Auth-Token") authToken: String
+    ): Response<MessageResponse>
+
 }

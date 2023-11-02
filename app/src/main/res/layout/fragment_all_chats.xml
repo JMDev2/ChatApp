@@ -4,7 +4,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    tools:context=".HomeFragment">
+    tools:context=".ui.AllChatsFragment">
 
     <com.google.android.material.appbar.AppBarLayout
         android:id="@+id/appbar"
@@ -20,7 +20,6 @@
             android:background="@color/white"
             app:title="All Chats"
             app:layout_scrollFlags="scroll|enterAlways"
-            app:navigationIcon="@drawable/keyboard_backspace"
             app:popupTheme="@style/ThemeOverlay.AppCompat.Light"
             app:theme="@style/ThemeOverlay.AppCompat.ActionBar" />
 
@@ -44,4 +43,5 @@
         app:layout_constraintStart_toStartOf="@id/chat_recyclerview"
         app:layout_constraintEnd_toEndOf="@id/chat_recyclerview"
         app:layout_constraintBottom_toBottomOf="@id/chat_recyclerview"/>
+
 </androidx.constraintlayout.widget.ConstraintLayout>

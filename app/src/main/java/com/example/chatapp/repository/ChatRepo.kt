@@ -13,4 +13,10 @@ class ChatRepo @Inject constructor(private val api: ChatApiImpl) {
         emit(Resource.loading(null))
         emit(api.postUserLogin(login)) //give th actual results
     }.flowOn(Dispatchers.IO)
+
+    //get all messages
+    suspend fun getMessages(authToken: String) = flow {
+        emit(Resource.loading(null))
+        emit(api.getAllMessages(authToken))
+    }.flowOn(Dispatchers.IO)
 }

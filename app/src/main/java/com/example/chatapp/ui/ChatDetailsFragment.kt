@@ -7,13 +7,17 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.navigation.fragment.findNavController
+import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.chatapp.R
+import com.example.chatapp.adapter.ChatAdapter
+import com.example.chatapp.adapter.ChatDetailsAdapter
 import com.example.chatapp.databinding.FragmentChatDetailsBinding
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
 class ChatDetailsFragment : Fragment() {
     private lateinit var binding: FragmentChatDetailsBinding
+    private lateinit var chatDetailsAdapter: ChatDetailsAdapter
 
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -32,9 +36,17 @@ class ChatDetailsFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        binding.button.setOnClickListener {
-            findNavController().navigate(R.id.allChatsFragment)
+
+        setRecyclerView()
+
+    }
+
+    private fun setRecyclerView() {
+        binding.chatDetailsRecyclerview.apply {
+            layoutManager = LinearLayoutManager(activity, LinearLayoutManager.VERTICAL, false)
+            adapter = chatDetailsAdapter
         }
+
     }
 
 

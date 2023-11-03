@@ -22,6 +22,7 @@ class LoginFragment : Fragment() {
     private lateinit var binding: FragmentLoginBinding
     private val viewModel: ChatViewModel by viewModels()
 
+
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?

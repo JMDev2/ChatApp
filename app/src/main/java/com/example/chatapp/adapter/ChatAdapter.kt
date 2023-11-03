@@ -21,7 +21,7 @@ class ChatAdapter (private val chats: ArrayList<MessageResponseItem>):
 
 
                 val timestamp = message.timestamp // Replace with the actual timestamp from the chat message
-                val formattedTime = formatTimestampToHHMM(timestamp)
+                val formattedTime = timestamp?.let { formatTimestampToHHMM(it) }
                 binding.timeStamp.text = formattedTime
 
             }

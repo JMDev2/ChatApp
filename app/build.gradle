@@ -4,6 +4,10 @@ plugins {
     id 'kotlin-kapt'
     id("com.google.dagger.hilt.android")
     id "org.jlleitschuh.gradle.ktlint" version "11.0.0"
+
+    //safe args plugin
+    id 'androidx.navigation.safeargs.kotlin'
+
 }
 
 android {

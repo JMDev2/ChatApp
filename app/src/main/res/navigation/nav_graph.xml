@@ -15,11 +15,6 @@
             app:destination="@id/allChatsFragment" />
     </fragment>
     <fragment
-        android:id="@+id/homeFragment"
-        android:name="com.example.chatapp.HomeFragment"
-        android:label="fragment_home"
-        tools:layout="@layout/fragment_chats" />
-    <fragment
         android:id="@+id/chatDetailsFragment"
         android:name="com.example.chatapp.ui.ChatDetailsFragment"
         android:label="fragment_chat_details"
@@ -27,6 +22,10 @@
         <action
             android:id="@+id/action_chatDetailsFragment_to_allChatsFragment"
             app:destination="@id/allChatsFragment" />
+<!--        <argument-->
+<!--            android:name="thread_id"-->
+<!--            app:argType="integer"-->
+<!--            android:defaultValue="0"/>-->
     </fragment>
     <fragment
         android:id="@+id/allChatsFragment"
@@ -36,5 +35,13 @@
         <action
             android:id="@+id/action_allChatsFragment_to_chatDetailsFragment"
             app:destination="@id/chatDetailsFragment" />
+        <action
+            android:id="@+id/action_allChatsFragment_to_loginFragment"
+            app:destination="@id/loginFragment" />
+
+<!--        <argument-->
+<!--            android:name="id"-->
+<!--            app:argType="integer"-->
+<!--            android:defaultValue="0"/>-->
     </fragment>
 </navigation>

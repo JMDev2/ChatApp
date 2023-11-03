@@ -8,8 +8,10 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.viewModels
+import androidx.navigation.findNavController
 import androidx.navigation.fragment.NavHostFragment
 import androidx.navigation.fragment.findNavController
+import androidx.navigation.fragment.navArgs
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.chatapp.R
 import com.example.chatapp.adapter.ChatAdapter
@@ -24,7 +26,7 @@ import dagger.hilt.android.AndroidEntryPoint
 class AllChatsFragment : Fragment() {
     private lateinit var binding: FragmentAllChatsBinding
     private lateinit var chatAdapter: ChatAdapter
-    private var auth : AuthResponse? = null
+   // private val args: AllChatsFragmentArgs by navArgs()
 
     private val viewModel: ChatViewModel by viewModels()
 
@@ -51,8 +53,12 @@ class AllChatsFragment : Fragment() {
     }
 
     private fun onChatClick(){
+
         chatAdapter.onItemClick = { chat ->
-            findNavController().navigate(R.id.chatDetailsFragment)
+            val bundle = Bundle()
+            bundle.putParcelable("chat", chat)
+
+            requireView().findNavController().navigate(R.id.chatDetailsFragment, bundle)
         }
     }
 

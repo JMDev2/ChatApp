@@ -26,4 +26,8 @@ class ChatApiImpl @Inject constructor(private val api: ChatService) : ChatApi {
             }
 
     }
+
+    //send message
+   // suspend fun sendMessage(): Resource<>
+
 }

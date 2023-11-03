@@ -53,10 +53,10 @@ class AllChatsFragment : Fragment() {
     }
 
     private fun onChatClick(){
-
         chatAdapter.onItemClick = { chat ->
             val bundle = Bundle()
-            bundle.putParcelable("chat", chat)
+            bundle.putInt("chat", chat.thread_id)
+            Log.d("chat","uuuu: ${chat.thread_id}")
 
             requireView().findNavController().navigate(R.id.chatDetailsFragment, bundle)
         }
@@ -69,6 +69,8 @@ class AllChatsFragment : Fragment() {
         }
 
     }
+
+
 
     private fun obcerveChats(){
         viewModel.observeChatsLiveData().observe(viewLifecycleOwner) { chatsResponse ->

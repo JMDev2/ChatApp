@@ -25,7 +25,7 @@ interface ChatService {
     //send message
     @POST("api/messages")
     suspend fun sendMessage(
-
+        thread_id: String, body: String
     ):Response<SendMessageResponse>
 
 }

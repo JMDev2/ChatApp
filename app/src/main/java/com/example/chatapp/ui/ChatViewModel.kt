@@ -7,6 +7,7 @@ import androidx.lifecycle.viewModelScope
 import com.example.chatapp.models.AuthResponse
 import com.example.chatapp.models.Login
 import com.example.chatapp.models.MessageResponse
+import com.example.chatapp.models.SendMessageResponse
 import com.example.chatapp.repository.ChatRepo
 import com.example.personalexpenditure.utils.Resource
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -19,17 +20,17 @@ class ChatViewModel @Inject constructor(private val repository: ChatRepo) : View
 
     val chatLiveData = MutableLiveData<Resource<AuthResponse?>>()
     val displayChatLiveData = MutableLiveData<Resource<MessageResponse?>>()
+    val sendMessageLiveData = MutableLiveData<Resource<SendMessageResponse?>>()
 
+    //login method
     fun userLogin(login: Login) = viewModelScope.launch {
         repository.userLogin(login).collect { response ->
             chatLiveData.value = response  // Update the chatLiveData with the response value
         }
     }
 
-//    init {
-//        getAllMessages()
-//    }
 
+    //get the chats
     fun getAllMessages(authToken: String) = viewModelScope.launch {
         repository.getMessages(authToken).collect{
             displayChatLiveData.postValue(it)
@@ -38,6 +39,13 @@ class ChatViewModel @Inject constructor(private val repository: ChatRepo) : View
 
     fun observeChatsLiveData(): LiveData<Resource<MessageResponse?>>{
         return displayChatLiveData
+    }
+
+    //send message
+    fun sendMessage(thread_id: String, body: String) = viewModelScope.launch {
+        repository.sendMessage(thread_id, body).collect { response ->
+            sendMessageLiveData.value = response
+        }
     }
 
 }

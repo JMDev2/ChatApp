@@ -19,4 +19,10 @@ class ChatRepo @Inject constructor(private val api: ChatApiImpl) {
         emit(Resource.loading(null))
         emit(api.getAllMessages(authToken))
     }.flowOn(Dispatchers.IO)
+
+    //send message
+    suspend fun sendMessage(thread_id: String, body: String) = flow {
+        emit(Resource.loading(null))
+        emit(api.sendMessage(thread_id, body))
+    }.flowOn(Dispatchers.IO)
 }

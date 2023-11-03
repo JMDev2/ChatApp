@@ -3,6 +3,7 @@ package com.example.chatapp.api
 import com.example.chatapp.models.AuthResponse
 import com.example.chatapp.models.Login
 import com.example.chatapp.models.MessageResponse
+import com.example.chatapp.models.SendMessageResponse
 import com.example.personalexpenditure.utils.Resource
 import javax.inject.Inject
 
@@ -28,6 +29,13 @@ class ChatApiImpl @Inject constructor(private val api: ChatService) : ChatApi {
     }
 
     //send message
-   // suspend fun sendMessage(): Resource<>
+    suspend fun sendMessage(thread_id: String, body: String): Resource<SendMessageResponse?>{
+        val response = api.sendMessage(thread_id, body)
+        return if (response.isSuccessful){
+            Resource.success(response.body())
+        }else{
+            Resource.error("Failed to send the message", null)
+        }
+    }
 
 }

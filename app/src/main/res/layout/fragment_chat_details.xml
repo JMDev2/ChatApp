@@ -24,6 +24,7 @@
         android:weightSum="100">
 
         <EditText
+            android:id="@+id/message_edt"
             android:layout_width="wrap_content"
             android:layout_height="50dp"
             android:hint="Message"
@@ -33,6 +34,7 @@
             android:layout_weight="85"/>
 
         <ImageView
+            android:id="@+id/send_btn"
             android:layout_width="40dp"
             android:layout_height="50dp"
             android:src="@drawable/send"

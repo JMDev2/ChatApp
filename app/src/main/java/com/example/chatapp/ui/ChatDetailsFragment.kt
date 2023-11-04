@@ -47,7 +47,6 @@ class ChatDetailsFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-
         val token = SharedPreference.getToken(requireContext())
         Log.d("TokenBeforeRequest", token.toString())
         viewModel.getAllMessages(token.toString())
@@ -57,32 +56,40 @@ class ChatDetailsFragment : Fragment() {
 
     }
 
-    private fun receiveChats(messages: MessageResponse){
-
+    private fun receiveChats(messages: MessageResponse) {
+        // Extract received values from arguments
         val receivedThread_id = requireArguments().getInt("chat")
-        val receivedUser_id = requireArguments().getParcelable<MessageResponseItem>("user_id")
-        val textMessage = binding.messageEdt.text
+        val receivedUser = requireArguments().getParcelable<MessageResponseItem>("user_id")
 
-        receivedUser_id?.let {
-            binding.userId.text = receivedUser_id.user_id
+        // Set user_id to the TextView if available
+        receivedUser?.user_id?.let {
+            binding.userId.text = it
         }
 
+        Log.d("chat", "received1: $receivedThread_id")
 
-        Log.d("chat","received1:$receivedThread_id")
         receivedThread_id?.let {
+            // Filter messages based on received thread_id
             val filteredMessages = messages.filter { message ->
                 message.thread_id == receivedThread_id
             }
 
-
+            // Create an adapter with the filtered messages
             chatDetailsAdapter = ChatDetailsAdapter(filteredMessages as ArrayList<MessageResponseItem>)
-            Log.e("chatii","received2:${filteredMessages}")
+
         }
+
+        // Send button click listener
         binding.sendBtn.setOnClickListener {
-            viewModel.sendMessage(receivedThread_id.toString(), textMessage.toString())
-            Toast.makeText(requireContext(), "sent", Toast.LENGTH_SHORT).show()
+            val textMessage = binding.messageEdt.text.toString()
+            receivedThread_id?.let {
+                // Send the message using ViewModel
+                viewModel.sendMessage(it.toString(), textMessage)
+                Toast.makeText(requireContext(), "Message sent", Toast.LENGTH_SHORT).show()
+            }
         }
     }
+
 
     private fun setRecyclerView() {
         binding.chatDetailsRecyclerview.apply {

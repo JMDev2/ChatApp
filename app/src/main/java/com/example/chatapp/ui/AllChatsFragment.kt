@@ -26,7 +26,6 @@ import dagger.hilt.android.AndroidEntryPoint
 class AllChatsFragment : Fragment() {
     private lateinit var binding: FragmentAllChatsBinding
     private lateinit var chatAdapter: ChatAdapter
-   // private val args: AllChatsFragmentArgs by navArgs()
 
     private val viewModel: ChatViewModel by viewModels()
 
@@ -55,7 +54,7 @@ class AllChatsFragment : Fragment() {
     private fun onChatClick(){
         chatAdapter.onItemClick = { chat ->
             val bundle = Bundle()
-            bundle.putInt("chat", chat.thread_id)
+            bundle.putInt("chat", chat.thread_id) //pass the thread_id to open a specific chat
             bundle.putParcelable("user_id", chat)
             Log.d("chat","uuuu: ${chat.thread_id}")
 
@@ -70,8 +69,6 @@ class AllChatsFragment : Fragment() {
         }
 
     }
-
-
 
     private fun obcerveChats(){
         viewModel.observeChatsLiveData().observe(viewLifecycleOwner) { chatsResponse ->

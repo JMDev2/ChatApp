@@ -56,6 +56,7 @@ class AllChatsFragment : Fragment() {
         chatAdapter.onItemClick = { chat ->
             val bundle = Bundle()
             bundle.putInt("chat", chat.thread_id)
+            bundle.putParcelable("user_id", chat)
             Log.d("chat","uuuu: ${chat.thread_id}")
 
             requireView().findNavController().navigate(R.id.chatDetailsFragment, bundle)

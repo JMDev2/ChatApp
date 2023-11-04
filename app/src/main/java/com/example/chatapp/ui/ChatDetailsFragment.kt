@@ -7,6 +7,7 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Toast
 import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -17,6 +18,7 @@ import com.example.chatapp.databinding.FragmentChatDetailsBinding
 import com.example.chatapp.databinding.FragmentChatsBinding
 import com.example.chatapp.models.MessageResponse
 import com.example.chatapp.models.MessageResponseItem
+import com.example.chatapp.models.SendMessageResponse
 import com.example.chatapp.utils.SharedPreference
 import com.example.personalexpenditure.utils.Status
 import dagger.hilt.android.AndroidEntryPoint
@@ -26,11 +28,7 @@ class ChatDetailsFragment : Fragment() {
     private lateinit var binding: FragmentChatDetailsBinding
     private lateinit var chatDetailsAdapter: ChatDetailsAdapter
 
-
     private val viewModel: ChatViewModel by viewModels()
-
-
-
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -62,14 +60,27 @@ class ChatDetailsFragment : Fragment() {
     private fun receiveChats(messages: MessageResponse){
 
         val receivedThread_id = requireArguments().getInt("chat")
+        val receivedUser_id = requireArguments().getParcelable<MessageResponseItem>("user_id")
         val textMessage = binding.messageEdt.text
+
+        receivedUser_id?.let {
+            binding.userId.text = receivedUser_id.user_id
+        }
+
+
         Log.d("chat","received1:$receivedThread_id")
         receivedThread_id?.let {
             val filteredMessages = messages.filter { message ->
                 message.thread_id == receivedThread_id
             }
+
+
             chatDetailsAdapter = ChatDetailsAdapter(filteredMessages as ArrayList<MessageResponseItem>)
             Log.e("chatii","received2:${filteredMessages}")
+        }
+        binding.sendBtn.setOnClickListener {
+            viewModel.sendMessage(receivedThread_id.toString(), textMessage.toString())
+            Toast.makeText(requireContext(), "sent", Toast.LENGTH_SHORT).show()
         }
     }
 

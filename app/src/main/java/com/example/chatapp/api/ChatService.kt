@@ -5,10 +5,7 @@ import com.example.chatapp.models.Login
 import com.example.chatapp.models.MessageResponse
 import com.example.chatapp.models.SendMessageResponse
 import retrofit2.Response
-import retrofit2.http.Body
-import retrofit2.http.GET
-import retrofit2.http.Header
-import retrofit2.http.POST
+import retrofit2.http.*
 
 interface ChatService {
     @POST("api/login")
@@ -24,8 +21,9 @@ interface ChatService {
 
     //send message
     @POST("api/messages")
+    @FormUrlEncoded
     suspend fun sendMessage(
-        thread_id: String, body: String
+        @Field("thread_id")thread_id: String, @Field("body")body: String
     ):Response<SendMessageResponse>
 
 }

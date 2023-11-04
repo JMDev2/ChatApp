@@ -53,7 +53,8 @@ class LoginFragment : Fragment() {
             val login = Login(username, password)
             viewModel.userLogin(login)
         } else {
-            binding.errorTextView.text = "Invalid details"
+            binding.errorTextView.visibility = View.VISIBLE
+            binding.errorTextView.text = "Invalid Password"
         }
     }
 

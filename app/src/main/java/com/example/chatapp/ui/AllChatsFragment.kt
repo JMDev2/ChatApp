@@ -93,6 +93,7 @@ class AllChatsFragment : Fragment() {
             }
                 Status.ERROR ->{
                 hideProgressBar()
+                    showErrorText()
 
             }
             }
@@ -105,6 +106,9 @@ class AllChatsFragment : Fragment() {
 
     private fun showProgressBar() {
         binding.progressBar.visibility = View.VISIBLE
+    }
+    private fun showErrorText() {
+        binding.errorText.visibility = View.VISIBLE
     }
 
 

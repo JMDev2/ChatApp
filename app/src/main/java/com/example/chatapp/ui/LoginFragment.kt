@@ -75,14 +75,12 @@ class LoginFragment : Fragment() {
 
                 }
                 Status.LOADING -> {
-                 //   binding.progressBar.visibility = View.VISIBLE
-                    // Handle loading state
+                    binding.progressBar2.visibility = View.VISIBLE
+                    binding.loginBtn.visibility = View.GONE
                 }
                 Status.ERROR -> {
-                    //val errorMessage = response.message
-                 //   binding.errorTextView.visibility = View.VISIBLE
-                 //   binding.progressBar.visibility = View.GONE
-                    // Handle error state and display the error message
+
+
                 }
             }
         }

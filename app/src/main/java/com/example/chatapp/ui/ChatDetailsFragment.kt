@@ -51,9 +51,9 @@ class ChatDetailsFragment : Fragment() {
         val token = SharedPreference.getToken(requireContext())
         Log.d("TokenBeforeRequest", token.toString())
         viewModel.getAllMessages(token.toString())
-       // setRecyclerView()
+
         observeChats()
-      //  sendMessage(receivedThread_id.toString(), textMessage.toString())
+
 
     }
 
@@ -104,10 +104,10 @@ class ChatDetailsFragment : Fragment() {
             when(chatsResponse.status){
                 Status.SUCCESS ->{
                    // hideProgressBar()
+                    binding.progressBar3.visibility = View.GONE
                     val chats = chatsResponse.data
 
                     chats?.let {
-                       // chatDetailsAdapter = ChatDetailsAdapter(it)
                         receiveChats(chats)
                         setRecyclerView()
                     }
@@ -115,6 +115,7 @@ class ChatDetailsFragment : Fragment() {
                 }
                 Status.LOADING -> {
                    // showProgressBar()
+                    binding.progressBar3.visibility = View.VISIBLE
 
                 }
                 Status.ERROR ->{

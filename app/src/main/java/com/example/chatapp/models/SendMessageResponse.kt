@@ -5,10 +5,10 @@ import kotlinx.parcelize.Parcelize
 
 @Parcelize
 data class SendMessageResponse(
-    val agent_id: String,
+    val agent_id: String? = null,
     val body: String,
-    val id: Int,
-    val thread_id: Int,
-    val timestamp: String,
-    val user_id: String
+    val id: Int? = null,
+    val thread_id: Int? = null,
+    val timestamp: String? = null,
+    val user_id: String? = null
 ) : Parcelable

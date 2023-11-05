@@ -1,21 +1,16 @@
 package com.example.chatapp.ui
 
-import android.content.Context
 import android.os.Bundle
 import android.util.Log
-import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
+import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
-import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
-import com.example.chatapp.R
-import com.example.chatapp.adapter.ChatAdapter
 import com.example.chatapp.adapter.ChatDetailsAdapter
 import com.example.chatapp.databinding.FragmentChatDetailsBinding
-import com.example.chatapp.databinding.FragmentChatsBinding
 import com.example.chatapp.models.MessageResponse
 import com.example.chatapp.models.MessageResponseItem
 import com.example.chatapp.models.SendMessageResponse
@@ -28,7 +23,9 @@ class ChatDetailsFragment : Fragment() {
     private lateinit var binding: FragmentChatDetailsBinding
     private lateinit var chatDetailsAdapter: ChatDetailsAdapter
 
+    private val messageList: MessageResponseItem? = null
     private val viewModel: ChatViewModel by viewModels()
+
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -46,6 +43,7 @@ class ChatDetailsFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+
 
         val token = SharedPreference.getToken(requireContext())
         Log.d("TokenBeforeRequest", token.toString())
@@ -75,20 +73,50 @@ class ChatDetailsFragment : Fragment() {
             }
 
             // Create an adapter with the filtered messages
-            chatDetailsAdapter = ChatDetailsAdapter(filteredMessages as ArrayList<MessageResponseItem>)
-
+            chatDetailsAdapter =
+                ChatDetailsAdapter(filteredMessages as ArrayList<MessageResponseItem>)
         }
 
         // Send button click listener
         binding.sendBtn.setOnClickListener {
-            val textMessage = binding.messageEdt.text.toString()
             receivedThread_id?.let {
-                // Send the message using ViewModel
-                viewModel.sendMessage(it.toString(), textMessage)
-                Toast.makeText(requireContext(), "Message sent", Toast.LENGTH_SHORT).show()
+                val validationResult = validateMessage(receivedThread_id)
+                if (validationResult.isValid) {
+                    validationResult.message?.let { message ->
+                        // Send the validated message using ViewModel
+                        val token = SharedPreference.getToken(requireContext())
+                        viewModel.sendMessage(
+                            token.toString(),
+                            SendMessageResponse(thread_id = receivedThread_id, body = message.body)
+                        )
+                        chatDetailsAdapter.notifyDataSetChanged()
+                        Log.d("YourTag", "Message sent: ${message.body}")
+                        Toast.makeText(requireContext(), "Message sent", Toast.LENGTH_SHORT).show()
+
+
+                    }
+                } else {
+                    Toast.makeText(
+                        requireContext(),
+                        "Invalid message or thread_id",
+                        Toast.LENGTH_SHORT
+                    ).show()
+                }
             }
         }
     }
+
+    private fun validateMessage(thread_id: Int?): ValidateText {
+        val textMessage = binding.messageEdt.text.toString()
+
+        if (thread_id == null) {
+            return ValidateText(false, null)
+        }
+
+        return ValidateText(true, SendMessageResponse(thread_id = thread_id, body = textMessage))
+    }
+
+    private data class ValidateText(val isValid: Boolean, val message: SendMessageResponse?)
 
 
     private fun setRecyclerView() {
@@ -98,19 +126,12 @@ class ChatDetailsFragment : Fragment() {
         }
     }
 
-    private fun sendMessage(thread_id: String, body: String){
-        val textMessage = binding.messageEdt.text
 
-        if (textMessage.isNotEmpty()){
-            viewModel.sendMessage(thread_id, body)
-        }
-    }
-
-    private fun observeChats(){
+    private fun observeChats() {
         viewModel.observeChatsLiveData().observe(viewLifecycleOwner) { chatsResponse ->
-            when(chatsResponse.status){
-                Status.SUCCESS ->{
-                   // hideProgressBar()
+            when (chatsResponse.status) {
+                Status.SUCCESS -> {
+                    // hideProgressBar()
                     binding.progressBar3.visibility = View.GONE
                     val chats = chatsResponse.data
 
@@ -121,12 +142,12 @@ class ChatDetailsFragment : Fragment() {
 
                 }
                 Status.LOADING -> {
-                   // showProgressBar()
+                    // showProgressBar()
                     binding.progressBar3.visibility = View.VISIBLE
 
                 }
-                Status.ERROR ->{
-                   // hideProgressBar()
+                Status.ERROR -> {
+                    // hideProgressBar()
 
                 }
             }

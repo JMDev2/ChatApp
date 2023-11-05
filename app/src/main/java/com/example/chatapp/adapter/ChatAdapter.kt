@@ -48,7 +48,6 @@ class ChatAdapter (private val chats: ArrayList<MessageResponseItem>):
         val inputFormat = SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSS'Z'")
         val outputFormat = SimpleDateFormat("HH:mm")
 
-        // Set the input format's time zone to UTC to match the timestamp format
         inputFormat.timeZone = TimeZone.getTimeZone("UTC")
 
         try {

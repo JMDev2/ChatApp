@@ -42,10 +42,12 @@ class ChatViewModel @Inject constructor(private val repository: ChatRepo) : View
     }
 
     //send message
-    fun sendMessage(thread_id: String, body: String) = viewModelScope.launch {
-        repository.sendMessage(thread_id, body).collect { response ->
+
+    fun sendMessage(token: String,message: SendMessageResponse) = viewModelScope.launch {
+        repository.sendMessage(token, message).collect { response ->
             sendMessageLiveData.value = response
         }
     }
+
 
 }

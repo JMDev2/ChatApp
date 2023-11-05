@@ -2,6 +2,7 @@ package com.example.chatapp.repository
 
 import com.example.chatapp.api.ChatApiImpl
 import com.example.chatapp.models.Login
+import com.example.chatapp.models.SendMessageResponse
 import com.example.personalexpenditure.utils.Resource
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.flow
@@ -21,8 +22,9 @@ class ChatRepo @Inject constructor(private val api: ChatApiImpl) {
     }.flowOn(Dispatchers.IO)
 
     //send message
-    suspend fun sendMessage(thread_id: String, body: String) = flow {
+    suspend fun sendMessage(token: String, message: SendMessageResponse) = flow {
         emit(Resource.loading(null))
-        emit(api.sendMessage(thread_id, body))
+        emit(api.sendMessage(token,message))
     }.flowOn(Dispatchers.IO)
+
 }

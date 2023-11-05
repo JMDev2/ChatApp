@@ -1,7 +1,6 @@
 package com.example.chatapp.adapter
 
 import android.content.Context
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
@@ -10,46 +9,48 @@ import com.example.chatapp.databinding.UserLayoutBinding
 import com.example.chatapp.models.MessageResponseItem
 import java.text.SimpleDateFormat
 import java.util.*
+import kotlin.collections.ArrayList
 
-class ChatDetailsAdapter(private val message: ArrayList<MessageResponseItem>) :
+class ChatDetailsAdapter(private val messageList: ArrayList<MessageResponseItem>) :
     RecyclerView.Adapter<RecyclerView.ViewHolder>() {
+
 
     private val ITEM_RECEIVE = 1
     private val ITEM_SENT = 2
 
-    inner class ReceiveViewHolder(val binding: AgentLayoutBinding, val context: Context) :
-        RecyclerView.ViewHolder(binding.root) {
-        fun bind(message: MessageResponseItem) {
-            binding.receiveTxt.text = message.body
-            val timestamp = message.timestamp // Replace with the actual timestamp from the chat message
-            val formattedTime = timestamp?.let { formatTimestampToHHMM(it) }
-            binding.receiveTxtTimeStamp.text = formattedTime
-        }
-    }
 
     inner class UserViewHolder(val binding: UserLayoutBinding, val context: Context) :
         RecyclerView.ViewHolder(binding.root) {
         fun bind(message: MessageResponseItem) {
             binding.userTxt.text = message.body
-            val timestamp =
-                message.timestamp // Replace with the actual timestamp from the chat message
+            val timestamp = message.timestamp
             val formattedTime = timestamp?.let { formatTimestampToHHMM(it) }
             binding.userTimeStamp.text = formattedTime
         }
     }
+    inner class AgentViewHolder(val binding: AgentLayoutBinding, val context: Context) :
+        RecyclerView.ViewHolder(binding.root) {
+        fun bind(message: MessageResponseItem) {
+            binding.receiveTxt.text = message.body
+            val timestamp = message.timestamp
+            val formattedTime = timestamp?.let { formatTimestampToHHMM(it) }
+            binding.receiveTxtTimeStamp.text = formattedTime
+        }
+    }
+
 
     override fun onBindViewHolder(holder: RecyclerView.ViewHolder, position: Int) {
-        val currentMessage = message[position]
+        val currentMessage = messageList[position]
 
         if (holder is UserViewHolder) {
             holder.bind(currentMessage)
-        } else if (holder is ReceiveViewHolder) {
+        } else if (holder is AgentViewHolder) {
             holder.bind(currentMessage)
         }
     }
 
     override fun getItemViewType(position: Int): Int {
-        val currentMessage = message[position]
+        val currentMessage = messageList[position]
         return if (currentMessage.agent_id == null) {
             ITEM_SENT
         } else {
@@ -60,7 +61,7 @@ class ChatDetailsAdapter(private val message: ArrayList<MessageResponseItem>) :
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RecyclerView.ViewHolder {
         return if (viewType == ITEM_RECEIVE) {
-            ReceiveViewHolder(
+            AgentViewHolder(
                 AgentLayoutBinding.inflate(LayoutInflater.from(parent.context), parent, false),
                 parent.context
             )
@@ -72,14 +73,19 @@ class ChatDetailsAdapter(private val message: ArrayList<MessageResponseItem>) :
         }
     }
 
-    override fun getItemCount(): Int = message.size
+    fun addMessage(message: MessageResponseItem) {
+        messageList.add(message)
+        notifyDataSetChanged()
+    }
+
+
+    override fun getItemCount(): Int = messageList.size
 
     //format the time stamp
     fun formatTimestampToHHMM(timestamp: String): String {
         val inputFormat = SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSS'Z'")
         val outputFormat = SimpleDateFormat("HH:mm")
 
-        // Set the input format's time zone to UTC to match the timestamp format
         inputFormat.timeZone = TimeZone.getTimeZone("UTC")
 
         try {

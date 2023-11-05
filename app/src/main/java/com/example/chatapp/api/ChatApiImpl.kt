@@ -29,13 +29,15 @@ class ChatApiImpl @Inject constructor(private val api: ChatService) : ChatApi {
     }
 
     //send message
-    suspend fun sendMessage(thread_id: String, body: String): Resource<SendMessageResponse?>{
-        val response = api.sendMessage(thread_id, body)
-        return if (response.isSuccessful){
+    suspend fun sendMessage(token: String, message: SendMessageResponse): Resource<SendMessageResponse?> {
+        val response = api.sendMessage(token,message)
+
+        return if (response.isSuccessful) {
             Resource.success(response.body())
-        }else{
+        } else {
             Resource.error("Failed to send the message", null)
         }
     }
+
 
 }

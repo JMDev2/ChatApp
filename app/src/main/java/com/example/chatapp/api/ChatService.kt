@@ -21,9 +21,9 @@ interface ChatService {
 
     //send message
     @POST("api/messages")
-    @FormUrlEncoded
     suspend fun sendMessage(
-        @Field("thread_id")thread_id: String, @Field("body")body: String
+        @Header("X-Branch-Auth-Token") authToken: String,
+       @Body request: SendMessageResponse
     ):Response<SendMessageResponse>
 
 }

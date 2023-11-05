@@ -43,7 +43,7 @@ class LoginFragment : Fragment() {
     }
 
     private fun userLogin() {
-        val email = "edwinkmuriithi@gmail.com"
+        val email = "mainajoseph964@gmail.com"
         val reversedPassword = email.reversed()
 
         val username = binding.emailEdt.text.toString().trim()
